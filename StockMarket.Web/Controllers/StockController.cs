@@ -15,7 +15,7 @@ namespace Platform.Web.Controllers
     {
         private const string API_Key = "sXa9wicwVsB92p1BDMzH";
         //private const string QuandlUrlFormat = @"https://www.quandl.com/api/v3/datatables/SHARADAR/SF1?ticker={0}&qopts.columns=ticker,revenue&api_key={1}";
-        private const string QuandlUrlFormat = @"https://www.quandl.com/api/v3/datasets/WIKI/{0}.json?column_index=1&api_key={1}&start_date={2}&end_date={3}";
+        private const string QuandlUrlFormat = @"https://www.quandl.com/api/v3/datasets/WIKI/{0}.json?column_index=1&order=asc&api_key={1}&start_date={2}&end_date={3}";
         public IActionResult Index()
         {
             return View();
