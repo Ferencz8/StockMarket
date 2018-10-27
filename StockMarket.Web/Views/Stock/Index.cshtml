@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </body>
 <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -32,7 +32,7 @@
 <script>
 
     $("#addStock").on('click', function () {
-                var code = $('#code').val();
+        var code = $('#code').val();
         var url = '@Url.Action("GetData", "Stock")';
         $.ajax({
             url: url,
@@ -40,11 +40,11 @@
             data: {code:code},
 
             success: function (data) {
-                var values = JSON.parse(data);
-                var intValues = values.map(n => n[1]);
-                options.series.push({ name: code, data: intValues });
+               
 
-                addStockCard();
+                options.series.push({ name: data.code, data: JSON.parse(data.data) });
+
+                addStockCard(data.code, data.description);
 
                 Highcharts.chart('stockContainer', options);
             }
@@ -53,13 +53,21 @@
 
     function addStockCard(code, description) {
 
-        var result = `@await Html.PartialAsync("StockCard", new StockCardViewModel() { Code = "MMM"})`;
-        $('#stockCards').find(".row:last-child").append(result);
+        
+        $.get("@Url.Action("GetStockCard", "Stock")", { code: code, description: description })
+            .done(function (data) {
+                $('#stockCards').find(".row:last-child").append(data);
 
-        $(".close").on("click", function (e) {
-            e.target.parentElement.parentElement.parentElement.remove();
-            //TODO:: do differently
-        });
+                $(".close").on("click", function (e) {
+                    var code = e.target.dataset.content;
+                    $('.' + code).remove();
+                    var remainingCompanies = options.series.filter(n => n.name != code);
+
+                    options.series = remainingCompanies;
+
+                    Highcharts.chart('stockContainer', options);
+                });
+            })
     }
 
     var options = {
@@ -67,7 +75,9 @@
         title: {
             text: 'Stocks'
         },
-
+        xAxis: {
+            type: 'datetime'
+        },
         yAxis: {
             title: {
                 text: ''
@@ -90,7 +100,8 @@
                 label: {
                     connectorAllowed: true
                 },
-                pointStart: 2010
+                //pointStart: Date.UTC(2017, 10, 28),
+                pointInterval: 24 * 3600 * 1000 // one day
             }
         },
 

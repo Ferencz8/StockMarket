@@ -1,9 +1,9 @@
 ﻿@model StockCardViewModel
-<div class="card col-md-4" style="width: 18rem;">
+<div class="card col-md-4 @Model.Code" style="width: 18rem;">
     <div class="card-body">
         <h5 class="card-title">@Model.Code</h5>
         <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" data-content="@Model.Code">&times;</span>
         </button>
         <p class="card-text">@Model.Description</p>
     </div>

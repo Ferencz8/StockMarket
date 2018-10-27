@@ -58,7 +58,7 @@ namespace Platform.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Stock}/{action=Index}/{id?}");
             });
         }
     }
