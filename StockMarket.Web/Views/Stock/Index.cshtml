@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+<body>
+    <div style="width:80%; height:500px;margin-left:120px;">
+        <div id="stockContainer" style="width:100%; height:400px;">
+
+        </div>
+        <div id="stockCards">
+            <div class="row">
+                <div class="card col-md-4" style="width: 18rem;">
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Stock Code</span>
+                            </div>
+                            <input id="code" type="text" class="form-control" aria-describedby="basic-addon1">
+
+                            <button id="addStock" type="button" class="btn btn-outline-success">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"></script>
+<script>
+
+    $("#addStock").on('click', function () {
+                var code = $('#code').val();
+        var url = '@Url.Action("GetData", "Stock")';
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {code:code},
+
+            success: function (data) {
+                var values = JSON.parse(data);
+                var intValues = values.map(n => n[1]);
+                options.series.push({ name: code, data: intValues });
+
+                addStockCard();
+
+                Highcharts.chart('stockContainer', options);
+            }
+        });
+    });
+
+    function addStockCard(code, description) {
+
+        var result = `@await Html.PartialAsync("StockCard", new StockCardViewModel() { Code = "MMM"})`;
+        $('#stockCards').find(".row:last-child").append(result);
+
+        $(".close").on("click", function (e) {
+            e.target.parentElement.parentElement.parentElement.remove();
+            //TODO:: do differently
+        });
+    }
+
+    var options = {
+
+        title: {
+            text: 'Stocks'
+        },
+
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+        tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            style: {
+                color: '#F0F0F0'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: true
+                },
+                pointStart: 2010
+            }
+        },
+
+        series: [],
+
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+
+    };
+    var myChart = Highcharts.chart('stockContainer', options);
+</script>
