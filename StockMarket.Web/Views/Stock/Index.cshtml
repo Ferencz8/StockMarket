@@ -71,7 +71,17 @@
     }
 
     var options = {
-
+        chart: {
+            backgroundColor: {
+                linearGradient: [0, 0, 500, 500],
+                stops: [
+                    [0, 'rgb(255, 255, 255)'],
+                    [1, 'rgb(200, 200, 255)']
+                ]
+            },
+            polar: true,
+            type: 'line'
+        },
         title: {
             text: 'Stocks'
         },
@@ -83,18 +93,19 @@
                 text: ''
             }
         },
-        tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-            style: {
-                color: '#F0F0F0'
-            }
-        },
         legend: {
             layout: 'vertical',
             align: 'right',
             verticalAlign: 'middle'
+        }, 
+        tooltip: {
+            //backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            //style: {
+            //    color: '#F0F0F0'
+            //},
+            shared: true,
+            crosshairs: true
         },
-
         plotOptions: {
             series: {
                 label: {
@@ -112,17 +123,10 @@
             rules: [{
                 condition: {
                     maxWidth: 500
-                },
-                chartOptions: {
-                    legend: {
-                        layout: 'horizontal',
-                        align: 'center',
-                        verticalAlign: 'bottom'
-                    }
                 }
             }]
         }
 
     };
-    var myChart = Highcharts.chart('stockContainer', options);
+    Highcharts.chart('stockContainer', options);
 </script>
