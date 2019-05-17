@@ -1,1 +1,1 @@
-
+[![Build Status](https://dev.azure.com/ferenczv8/alarmclock/_apis/build/status/Ferencz8.StockMarket?branchName=master)](https://dev.azure.com/ferenczv8/alarmclock/_build/latest?definitionId=1&branchName=master)
